@@ -86,14 +86,17 @@ public abstract class Communicator {
     m.addCommand("shoot", () ->{
       String[] i = args.split(",");
       new ShootCommand(Integer.parseInt(i[0]), Integer.parseInt(i[1])).apply(friend);
+      switchSides();
     });
     m.addCommand("des", () ->{
       String[] i = args.split(",");
       new DestroyerCommand(Integer.parseInt(i[0]), Integer.parseInt(i[1])).apply(foe);
+      switchSides();
     });
     m.addCommand("bat", () ->{
       String[] i = args.split(",");
       new BattleshipCommand(Integer.parseInt(i[0]), Integer.parseInt(i[1]), Boolean.parseBoolean(i[2])).apply(foe);
+      switchSides();
     });
 
     g.updateRunnable(() -> {
