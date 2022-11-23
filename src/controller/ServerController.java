@@ -13,7 +13,7 @@ public class ServerController extends Communicator{
   public ServerController() throws IOException {
     super(new ServerSocket(1234).accept());
     System.out.println("connected");
-    view = new ViewImpl("server");
+    view = new ViewImpl("server", this);
     view.updateMouseListener(g);
     int size = sc.nextInt();
     int des = sc.nextInt();

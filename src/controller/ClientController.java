@@ -22,7 +22,7 @@ public class ClientController extends Communicator{
       this.foe = new BoardImpl(Integer.parseInt(i[0]), Integer.parseInt(i[1]), Integer.parseInt(i[2]));
       displayBoard(friend);
     });
-    view = new ViewImpl("client");
+    view = new ViewImpl("client", this);
     view.updateMouseListener(g);
   }
 

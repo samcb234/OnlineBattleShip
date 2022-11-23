@@ -3,7 +3,9 @@ package View;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,8 +15,9 @@ public class ViewImpl extends JFrame implements BattleShipView {
 
   private JComboBox<String> b;
   private JPanel p;
+  private JButton ready;
 
-  public ViewImpl(String name){
+  public ViewImpl(String name, ActionListener a){
     setSize(1920, 1080);
     setName(name);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,11 +26,15 @@ public class ViewImpl extends JFrame implements BattleShipView {
     b.setPrototypeDisplayValue("select ship to place");
     b.addItem("BattleShip");
     b.addItem("Destroyer");
+    ready = new JButton("ready");
+    ready.addActionListener(a);
+    ready.setPreferredSize(new Dimension(100, 25));
     p = new JPanel();
     p.setBounds(800, 800, 100, 100);
     b.setBounds(800, 800, 100, 100);
     b.setPreferredSize(new Dimension(100, 25));
     p.add(b);
+    p.add(ready);
     this.add(p);
     setVisible(true);
   }
