@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 import model.Board;
+import model.Board.space;
 
 public abstract class Communicator implements ActionListener {
 
@@ -50,14 +51,20 @@ public abstract class Communicator implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e){
     this.r1 = true;
-    sendData("ready");
+    sendData("ready# ");
     if(r1 && r2){
       this.phase = true;
       g.updateRunnable(() ->{
-        int[] i = g.getCoord();
-        foe.shootAtSpace(i[1], i[0]);
-        sendData("shoot#" + i[1] + "," + i[0]);
+        if(turn) {
+          int[] i = g.getCoord();
+          foe.shootAtSpace(i[1], i[0]);
+          sendData("shoot#" + i[1] + "," + i[0]);
+          System.out.println("shot at: " + i[1] + ":" + i[0]);
+          view.updateSpace(i[1], i[0], foe.getSpaceAt(i[1], i[0]));
+          switchSides();
+        }
       });
+      clearBoard();
     }
   }
   protected Thread r = new Thread(new Runnable() {
@@ -113,7 +120,8 @@ public abstract class Communicator implements ActionListener {
     });
     m.addCommand("bat", () ->{
       String[] i = args.split(",");
-      new BattleshipCommand(Integer.parseInt(i[0]), Integer.parseInt(i[1]), Boolean.parseBoolean(i[2])).apply(foe);
+      new BattleshipCommand(Integer.parseInt(i[0]), Integer.parseInt(i[1]), true).apply(foe); //orientation is currently set to true
+                                                                                                    // will be changed later
       switchSides();
     });
     m.addCommand("ready", () -> {
@@ -125,6 +133,7 @@ public abstract class Communicator implements ActionListener {
           foe.shootAtSpace(i[1], i[0]);
           sendData("shoot#" + i[1] + "," + i[0]);
         });
+        clearBoard();
       }
     });
 
@@ -147,6 +156,14 @@ public abstract class Communicator implements ActionListener {
     for(int i = 0; i < b.boardSize(); i ++){
       for(int j = 0; j < b.boardSize(); j ++) {
         view.updateSpace(i, j, b.getSpaceAt(i, j));
+      }
+    }
+  }
+
+  protected void clearBoard(){
+    for(int i = 0; i < this.foe.boardSize(); i ++){
+      for (int j = 0; j < this.foe.boardSize(); j ++) {
+         view.updateSpace(i, j, space.Empty);
       }
     }
   }

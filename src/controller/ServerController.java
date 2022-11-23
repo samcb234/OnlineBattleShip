@@ -14,6 +14,7 @@ public class ServerController extends Communicator{
     super(new ServerSocket(1234).accept());
     System.out.println("connected");
     view = new ViewImpl("server", this);
+    System.out.println("view created");
     view.updateMouseListener(g);
     int size = sc.nextInt();
     int des = sc.nextInt();
