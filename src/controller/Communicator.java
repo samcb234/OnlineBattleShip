@@ -58,10 +58,18 @@ public abstract class Communicator implements ActionListener {
         if(turn) {
           int[] i = g.getCoord();
           foe.shootAtSpace(i[1], i[0]);
-          sendData("shoot#" + i[1] + "," + i[0]);
-          System.out.println("shot at: " + i[1] + ":" + i[0]);
+          //sendData("shoot#" + i[1] + "," + i[0]);
           view.updateSpace(i[1], i[0], foe.getSpaceAt(i[1], i[0]));
           switchSides();
+
+          try{
+            dos.writeUTF("shoot#" + i[1] + "," + i[0]);
+          }
+          catch(IOException x){
+            x.printStackTrace();
+          }
+          System.out.println("sent");
+          System.out.println("shot at: " + i[1] + ":" + i[0]);
         }
       });
       clearBoard();
@@ -106,6 +114,8 @@ public abstract class Communicator implements ActionListener {
     catch(IOException e){
       e.printStackTrace();
     }
+    System.out.println("sent");
+    return;
   }
   private void setStandardCommands(){
     m.addCommand("shoot", () ->{
