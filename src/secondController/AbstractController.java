@@ -2,6 +2,7 @@ package secondController;
 
 import View.BattleShipView;
 import View.ViewImpl;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,8 +10,9 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
+import model.Board;
 
-public abstract class AbstractController implements ActionListener {
+public abstract class AbstractController{
 
   protected Socket s;
   protected boolean turn, r1, r2;
@@ -48,6 +50,7 @@ public abstract class AbstractController implements ActionListener {
   });
 
   protected AbstractController(Socket s, String name) throws IOException{
+    this.read = true;
     this.s = s;
     this.r1 = false;
     this.r2 = false;
@@ -56,10 +59,8 @@ public abstract class AbstractController implements ActionListener {
     this.dos = new DataOutputStream(s.getOutputStream());
     this.m = new MessageListener();
     this.g = new GUIListener();
-    this.view = new ViewImpl(name, this);
-    view.updateMouseListener(g);
     setStandardCommands();
-
+    r.start();
   }
 
   protected void sendData(String data){
@@ -75,8 +76,9 @@ public abstract class AbstractController implements ActionListener {
 
   protected abstract void setStandardCommands();
 
-  protected abstract void updateView();
+  protected abstract void updateView(Board b);
 
   protected abstract void clearView();
+
 
 }
