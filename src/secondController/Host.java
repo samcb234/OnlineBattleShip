@@ -7,6 +7,7 @@ import controller.command.ShootCommand;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import model.Board;
@@ -136,9 +137,5 @@ public class Host extends AbstractController implements ActionListener {
       });
       clearView();
     }
-  }
-
-  public static void main(String[] args) throws IOException{
-    new Host();
   }
 }

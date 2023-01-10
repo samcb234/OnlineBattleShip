@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 import model.Board;
 import model.Board.space;
 import model.BoardImpl;
@@ -17,8 +18,8 @@ public class Client extends AbstractController implements ActionListener {
 
   InetAddress ip;
   protected int size;
-  public Client() throws IOException {
-    super(new Socket(InetAddress.getByName("localhost"), 1234), "Client");
+  public Client(String address) throws IOException {
+    super(new Socket(InetAddress.getByName(address), 1234), "Client");
     this.ip = InetAddress.getByName("localhost");
     this.turn = true;
     this.view = new ViewImpl("Client", this);
@@ -115,9 +116,5 @@ public class Client extends AbstractController implements ActionListener {
       });
       clearView();
     }
-  }
-
-  public static void main(String[] args) throws IOException{
-    new Client();
   }
 }
