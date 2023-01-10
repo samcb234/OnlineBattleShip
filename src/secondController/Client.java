@@ -47,6 +47,20 @@ public class Client extends AbstractController implements ActionListener {
       view.updateSpace(r + 1, c, space.Ship);
       view.updateSpace(r, c, space.Ship);
     });
+    m.addCommand("hit", () -> {
+      String[] i = args.split(",");
+      int r = Integer.parseInt(i[0]);
+      int c = Integer.parseInt(i[1]);
+      view.updateSpace(r, c, space.Hit);
+      this.turn = true;
+    });
+    m.addCommand("miss", () -> {
+      String[] i = args.split(",");
+      int r = Integer.parseInt(i[0]);
+      int c = Integer.parseInt(i[1]);
+      view.updateSpace(r, c, space.Miss);
+      this.turn = true;
+    });
     m.addCommand("ready", () -> {
       this.r2 = true;
       if(r1 && r2){
@@ -89,12 +103,15 @@ public class Client extends AbstractController implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     this.r1 = true;
-    sendData("ready#");
+    sendData("ready#,");
     if(r1 && r2){
       this.phase = true;
       g.updateRunnable(() ->{
-        int[] i = g.getCoord();
-        sendData("shoot#"+i[1]+","+i[0]);
+        if(turn) {
+          int[] i = g.getCoord();
+          sendData("shoot#" + i[1] + "," + i[0]);
+        }
+        this.turn = false;
       });
       clearView();
     }

@@ -118,17 +118,21 @@ public class Host extends AbstractController implements ActionListener {
   @Override
   public void actionPerformed(ActionEvent e) {
     System.out.println("pressed");
+    sendData("ready#,");
     this.r1 = true;
     if(r1 && r2){
       this.phase = true;
       g.updateRunnable(() ->{
-        int[] i = g.getCoord();
-        p2.shootAtSpace(i[1], i[0]);
-        if(p2.getSpaceAt(i[1], i[0]) == space.Hit) {
-          view.updateSpace(i[1], i[0], space.Hit);
-        }else{
-          view.updateSpace(i[1], i[0], space.Miss);
+        if(turn) {
+          int[] i = g.getCoord();
+          p2.shootAtSpace(i[1], i[0]);
+          if (p2.getSpaceAt(i[1], i[0]) == space.Hit) {
+            view.updateSpace(i[1], i[0], space.Hit);
+          } else {
+            view.updateSpace(i[1], i[0], space.Miss);
+          }
         }
+        this.turn = false;
       });
       clearView();
     }
