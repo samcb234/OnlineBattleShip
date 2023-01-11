@@ -27,7 +27,4 @@ public class ServerController extends Communicator{
     System.out.println("done");
   }
 
-  public static void main(String[] args) throws IOException{
-    new ServerController();
-  }
 }

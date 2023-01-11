@@ -26,7 +26,5 @@ public class ClientController extends Communicator{
     view.updateMouseListener(g);
   }
 
-  public static void main(String[] args) throws IOException{
-    new ClientController();
-  }
+
 }
