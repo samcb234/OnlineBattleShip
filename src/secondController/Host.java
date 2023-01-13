@@ -52,6 +52,10 @@ public class Host extends AbstractController implements ActionListener {
           sendData("miss#" + r + "," + c);
         }
         this.turn = true;
+        if(p1.allSunk()) {
+          sendData("gameover#");
+          System.out.println("game over!");
+        }
       }
       catch (IllegalArgumentException e){
         sendData("error#can't shoot at that position");
@@ -153,6 +157,10 @@ public class Host extends AbstractController implements ActionListener {
           }
         }
         this.turn = false;
+        if (p2.allSunk()){
+          sendData("gameover#");
+          System.out.println("game over!");
+        }
       });
       clearView();
     }
