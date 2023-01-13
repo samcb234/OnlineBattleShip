@@ -74,6 +74,10 @@ public class Client extends AbstractController implements ActionListener {
       }
     });
 
+    m.addCommand("error", () -> {
+      System.out.println(args);
+    });
+
     g.updateRunnable(() -> {
       int[] i = g.getCoord();
       switch (view.getShipVal()){

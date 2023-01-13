@@ -44,28 +44,42 @@ public class Host extends AbstractController implements ActionListener {
       String[] i = args.split(",");
       int r = Integer.parseInt(i[0]);
       int c = Integer.parseInt(i[1]);
-      new ShootCommand(r, c).apply(p1);
-      if(p1.getSpaceAt(r, c) == space.Hit){
-        sendData("hit#" + r + "," + c);
+      try {
+        new ShootCommand(r, c).apply(p1);
+        if (p1.getSpaceAt(r, c) == space.Hit) {
+          sendData("hit#" + r + "," + c);
+        } else {
+          sendData("miss#" + r + "," + c);
+        }
+        this.turn = true;
       }
-      else{
-        sendData("miss#" + r + "," + c);
+      catch (IllegalArgumentException e){
+        sendData("error#can't shoot at that position");
       }
-      this.turn = true;
     });
     m.addCommand("des", () ->{
       String[] i = args.split(",");
       int r = Integer.parseInt(i[0]);
       int c = Integer.parseInt(i[1]);
-      new DestroyerCommand(r, c).apply(p2);
-      sendData("des#" + r + "," +c);
+      try {
+        new DestroyerCommand(r, c).apply(p2);
+        sendData("des#" + r + "," + c);
+      }
+      catch (IllegalArgumentException e) {
+        sendData("error#can't place a destroyer there");
+      }
     });
     m.addCommand("bat", () ->{
       String[] i = args.split(",");
       int r = Integer.parseInt(i[0]);
       int c = Integer.parseInt(i[1]);
-      new BattleshipCommand(r, c, true).apply(p2);
-      sendData("bat#" + r + "," +c);
+      try {
+        new BattleshipCommand(r, c, true).apply(p2);
+        sendData("bat#" + r + "," + c);
+      }
+      catch (IllegalArgumentException e) {
+        sendData("error#can't place a battleship there");
+      }
     });
     m.addCommand("ready", () -> {
       this.r2 = true;
@@ -86,15 +100,20 @@ public class Host extends AbstractController implements ActionListener {
 
     g.updateRunnable(() -> {
       int[] i = g.getCoord();
-      switch (view.getShipVal()){
-        case "BattleShip":
-          p1.placeBattleShip(i[1], i[0], true); //THIS NEEDS TO CHANGE LATER!!!!
-          break;
-        case "Destroyer":
-          p1.placeDestroyer(i[1], i[0]);
-          break;
+      try {
+        switch (view.getShipVal()) {
+          case "BattleShip":
+            p1.placeBattleShip(i[1], i[0], true); //THIS NEEDS TO CHANGE LATER!!!!
+            break;
+          case "Destroyer":
+            p1.placeDestroyer(i[1], i[0]);
+            break;
+        }
+        updateView(p1);
       }
-      updateView(p1);
+      catch (IllegalArgumentException e) {
+        System.out.println("can't place a ship here");
+      }
     });
   }
 
