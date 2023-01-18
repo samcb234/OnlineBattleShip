@@ -38,12 +38,10 @@ public abstract class AbstractController{
           System.out.println(recieved);
         }
         catch(EOFException i){
-          read = false;
-          write = false;
-          break;
+          view.displayMessage(i.getMessage());
         }
         catch (IOException e) {
-          System.out.println("deez nuts");
+          view.displayMessage(e.getMessage());
         }
       }
     }
