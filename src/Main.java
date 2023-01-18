@@ -8,16 +8,16 @@ import secondController.Host;
 public class Main {
 
   public static void main(String[] args) throws IOException {
-    if(args.length != 1){
-      System.out.println("please select either host or client");
-    }
-    switch(args[0]){
-      case "host":
+    String[] inputs = {"host", "server"};
+    int role = JOptionPane.showOptionDialog(null, "select your role",
+        "select one", 0, 3, null, inputs, inputs[0]);
+    switch(role){
+      case 0:
         JOptionPane.showMessageDialog(null, InetAddress.getLocalHost().getHostAddress(),
             "", JOptionPane.PLAIN_MESSAGE);
         new Host();
         break;
-      case "client":
+      case 1:
         new Client(JOptionPane.showInputDialog(null,"please enter address of host"));
         break;
       default:
