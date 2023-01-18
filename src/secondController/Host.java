@@ -23,10 +23,9 @@ public class Host extends AbstractController implements ActionListener {
     super(new ServerSocket(1234).accept(), "Host");
     this.view = new ViewImpl("Host", this);
     view.updateMouseListener(g);
-    System.out.println("enter board size, number of battle ships, and number of destroyers");
-    int size = sc.nextInt();
-    int b = sc.nextInt();
-    int d = sc.nextInt();
+    int size = view.getGameVals("enter the size of the board");
+    int b = view.getGameVals("enter the number of battleships");
+    int d = view.getGameVals("enter the number of destroyers");
     this.p1 = new BoardImpl(size, b, d);
     this.p2 = new BoardImpl(size, b, d);
     this.turn = false;
@@ -54,11 +53,14 @@ public class Host extends AbstractController implements ActionListener {
         this.turn = true;
         if(p1.allSunk()) {
           sendData("gameover#");
-          System.out.println("game over!");
+          view.displayMessage("Game Over!");
         }
       }
       catch (IllegalArgumentException e){
-        sendData("error#can't shoot at that position");
+        sendData("error#"+e.getMessage());
+        if(e.getMessage().equals("you can't shoot at the same spot twice")){
+          this.turn = false;
+        }
       }
     });
     m.addCommand("des", () ->{
@@ -70,7 +72,7 @@ public class Host extends AbstractController implements ActionListener {
         sendData("des#" + r + "," + c);
       }
       catch (IllegalArgumentException e) {
-        sendData("error#can't place a destroyer there");
+        sendData("error#" + e.getMessage());
       }
     });
     m.addCommand("bat", () ->{
@@ -82,7 +84,7 @@ public class Host extends AbstractController implements ActionListener {
         sendData("bat#" + r + "," + c);
       }
       catch (IllegalArgumentException e) {
-        sendData("error#can't place a battleship there");
+        sendData("error#" + e.getMessage());
       }
     });
     m.addCommand("ready", () -> {
@@ -116,7 +118,7 @@ public class Host extends AbstractController implements ActionListener {
         updateView(p1);
       }
       catch (IllegalArgumentException e) {
-        System.out.println("can't place a ship here");
+        view.displayMessage(e.getMessage());
       }
     });
   }
@@ -146,20 +148,27 @@ public class Host extends AbstractController implements ActionListener {
     this.r1 = true;
     if(r1 && r2){
       this.phase = true;
+      this.turn = false;
       g.updateRunnable(() ->{
-        if(turn) {
-          int[] i = g.getCoord();
-          p2.shootAtSpace(i[1], i[0]);
-          if (p2.getSpaceAt(i[1], i[0]) == space.Hit) {
-            view.updateSpace(i[1], i[0], space.Hit);
-          } else {
-            view.updateSpace(i[1], i[0], space.Miss);
+        try {
+          if (turn) {
+            int[] i = g.getCoord();
+            p2.shootAtSpace(i[1], i[0]);
+            if (p2.getSpaceAt(i[1], i[0]) == space.Hit) {
+              view.updateSpace(i[1], i[0], space.Hit);
+            } else {
+              view.updateSpace(i[1], i[0], space.Miss);
+            }
           }
+          this.turn = false;
         }
-        this.turn = false;
+        catch (IllegalArgumentException k){
+          view.displayMessage(k.getMessage());
+        }
+
         if (p2.allSunk()){
           sendData("gameover#");
-          System.out.println("game over!");
+          view.displayMessage("Game Over!");
         }
       });
       clearView();

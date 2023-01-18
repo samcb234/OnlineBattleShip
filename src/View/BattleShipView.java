@@ -17,4 +17,6 @@ public interface BattleShipView {
   boolean rotate();
 
   String getShipVal();
+
+  int getGameVals(String message);
 }

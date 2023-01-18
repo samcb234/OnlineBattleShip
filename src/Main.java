@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 import secondController.Client;
 import secondController.Host;
 
@@ -12,13 +13,12 @@ public class Main {
     }
     switch(args[0]){
       case "host":
-        System.out.println(InetAddress.getLocalHost().getHostAddress());
+        JOptionPane.showMessageDialog(null, InetAddress.getLocalHost().getHostAddress(),
+            "", JOptionPane.PLAIN_MESSAGE);
         new Host();
         break;
       case "client":
-        System.out.println("please enter address of host");
-        Scanner t = new Scanner(System.in);
-        new Client(t.next());
+        new Client(JOptionPane.showInputDialog(null,"please enter address of host"));
         break;
       default:
         System.out.println("please select either host or client");

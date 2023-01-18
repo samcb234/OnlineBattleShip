@@ -5,9 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import model.Board.space;
 
@@ -53,7 +55,7 @@ public class ViewImpl extends JFrame implements BattleShipView {
 
   @Override
   public void displayMessage(String s) {
-
+    JOptionPane.showMessageDialog(null, s, "", JOptionPane.PLAIN_MESSAGE);
   }
 
   @Override
@@ -86,5 +88,11 @@ public class ViewImpl extends JFrame implements BattleShipView {
   @Override
   public String getShipVal(){
     return (String) b.getSelectedItem();
+  }
+
+  @Override
+  public int getGameVals(String message) {
+    int val =  Integer.parseInt(JOptionPane.showInputDialog(null,message));
+    return val;
   }
 }

@@ -75,11 +75,14 @@ public class Client extends AbstractController implements ActionListener {
     });
 
     m.addCommand("error", () -> {
-      System.out.println(args);
+      view.displayMessage(args);
+      if(args.equals("you can't shoot at the same spot twice")){
+        this.turn = true;
+      }
     });
 
     m.addCommand("gameover", () -> {
-      System.out.println("game over!");
+      view.displayMessage("Game Over!");
     });
 
     g.updateRunnable(() -> {
@@ -115,6 +118,7 @@ public class Client extends AbstractController implements ActionListener {
     sendData("ready#,");
     if(r1 && r2){
       this.phase = true;
+      this.turn = true;
       g.updateRunnable(() ->{
         if(turn) {
           int[] i = g.getCoord();

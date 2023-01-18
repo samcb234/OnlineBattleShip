@@ -60,13 +60,18 @@ public class BoardImpl implements Board {
     if(!board[row][col].equals(space.Empty)){
       throw new IllegalArgumentException("ship can't be placed there!");
     }
+    if(destroyerHealth.size() >= destroyers){
+      throw new IllegalArgumentException("destroyer limit reached");
+    }
     board[row][col] = space.Ship;
     destroyerHealth.add(new Destroyer(row, col));
   }
 
   @Override
-  public void placeBattleShip(int row, int col, boolean orientation)
-      throws IllegalArgumentException {
+  public void placeBattleShip(int row, int col, boolean orientation) throws IllegalArgumentException {
+    if(battleshipsHealth.size() >= battleships) {
+      throw new IllegalArgumentException("battleship limit reached");
+    }
     int[] rows;
     int[]cols;
     if(orientation){
@@ -137,8 +142,12 @@ public class BoardImpl implements Board {
     }
 
     for(int i = 0; i < 3; i++) {
+      if (!getSpaceAt(rows[i], cols[i]).equals(space.Empty)){
+        throw new IllegalArgumentException("can't place ship here");
+      }
       board[rows[i]][cols[i]] = space.Ship;
     }
+    battleshipsHealth.add(new Battleship(rows, cols));
   }
 
   private class Battleship{
