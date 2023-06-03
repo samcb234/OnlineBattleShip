@@ -1,9 +1,6 @@
 package secondController;
 
 import View.ViewImpl;
-import controller.command.BattleshipCommand;
-import controller.command.DestroyerCommand;
-import controller.command.ShootCommand;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -128,5 +125,9 @@ public class Client extends AbstractController implements ActionListener {
       });
       clearView();
     }
+  }
+
+  public static void main(String[] args) throws IOException{
+    new Client("127.0.0.1");
   }
 }

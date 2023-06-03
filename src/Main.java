@@ -8,7 +8,7 @@ import secondController.Host;
 public class Main {
 
   public static void main(String[] args) throws IOException {
-    String[] inputs = {"host", "server"};
+    String[] inputs = {"host", "client"};
     int role = JOptionPane.showOptionDialog(null, "select your role",
         "select one", 0, 3, null, inputs, inputs[0]);
     switch(role){

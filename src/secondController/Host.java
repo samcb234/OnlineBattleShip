@@ -174,4 +174,8 @@ public class Host extends AbstractController implements ActionListener {
       clearView();
     }
   }
+
+  public static void main(String[] args) throws IOException{
+    new Host();
+  }
 }
